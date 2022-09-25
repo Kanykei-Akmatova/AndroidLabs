@@ -6,12 +6,18 @@
     android:layout_height="match_parent">
 
     <GridLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="fill"
         android:columnCount="2"
         android:padding="5dp"
-        android:rowCount="4">
+        android:rowCount="4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5">
 
         <TextView
             android:id="@+id/textViewGrid1"
@@ -39,6 +45,7 @@
             android:layout_row="1"
             android:layout_column="1"
             android:layout_gravity="right"
+            android:paddingRight="10dp"
             android:text="@string/check_this_out_text" />
 
         <Button
