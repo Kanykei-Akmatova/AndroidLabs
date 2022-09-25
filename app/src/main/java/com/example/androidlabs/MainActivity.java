@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         checkBox.setOnCheckedChangeListener((CompoundButton cb, boolean isChecked) -> {
-
             String checkbox_status = isChecked ? checkbox_on : checkbox_off;
             String toast_message = the_checkbox_is_now + " " + checkbox_status;
 
