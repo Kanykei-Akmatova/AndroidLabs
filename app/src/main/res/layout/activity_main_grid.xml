@@ -20,7 +20,7 @@
             android:layout_row="0"
             android:layout_column="0"
             android:layout_gravity="top"
-            android:text="@string/i_love_androd_text"
+            android:text="@string/i_love_android_text"
             android:textSize="30dp" />
 
         <Switch
@@ -58,7 +58,7 @@
             android:layout_columnSpan="2"
             android:layout_gravity="fill"
             android:minHeight="48dp"
-            android:text="@string/i_love_androd_text" />
+            android:text="@string/i_love_android_text" />
 
         <ImageButton
             android:id="@+id/imageButtonGrid1"
