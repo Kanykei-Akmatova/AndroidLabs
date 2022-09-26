@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int currentLayout = R.layout.activity_main_grid;
+        int currentLayout = R.layout.activity_main_linear;
         setContentView(currentLayout);
 
         String toast_undo = getResources().getString(R.string.toast_undo);
@@ -30,16 +30,16 @@ public class MainActivity extends AppCompatActivity {
         Context context = getApplicationContext();
 
         // Comment the code below if you do not use activity_main_grid
-        Button button = (Button) findViewById(R.id.buttonGrid1);
-        EditText editText = (EditText) findViewById(R.id.editTextGrid1);
-        TextView textView = (TextView) findViewById(R.id.textViewGrid1);
-        CheckBox checkBox= (CheckBox) findViewById(R.id.checkBoxGrid1);
+        Button button = (Button) findViewById(R.id.buttonLiner1);
+        EditText editText = (EditText) findViewById(R.id.editTextLinner1);
+        TextView textView = (TextView) findViewById(R.id.textViewLiner1);
+        CheckBox checkBox = (CheckBox) findViewById(R.id.checkBoxLiner1);
 
         // Uncomment the code below if you use activity_main_linear
-//        Button button = (Button) findViewById(R.id.buttonLiner1);
-//        EditText editText = (EditText) findViewById(R.id.editTextLinner1);
-//        TextView textView = (TextView) findViewById(R.id.textViewLiner1);
-//        CheckBox checkBox = (CheckBox) findViewById(R.id.checkBoxLiner1);
+//        Button button = (Button) findViewById(R.id.buttonGrid1);
+//        EditText editText = (EditText) findViewById(R.id.editTextGrid1);
+//        TextView textView = (TextView) findViewById(R.id.textViewGrid1);
+//        CheckBox checkBox= (CheckBox) findViewById(R.id.checkBoxGrid1);
 
         //  Uncomment the code below if you use activity_main_contraint
 //        Button button = (Button) findViewById(R.id.buttonConst1);
