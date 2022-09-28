@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         EditText editText = (EditText) findViewById(R.id.editTextName);
         SharedPreferences sharedPref = getApplicationContext()
                 .getSharedPreferences(MY_PREF, MODE_PRIVATE);
-        String name = sharedPref.getString("Email", "");
+        String name = sharedPref.getString("name", "");
         editText.setText(name);
 
         Button button = (Button) findViewById(R.id.buttonNext);

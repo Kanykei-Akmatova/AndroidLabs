@@ -18,7 +18,8 @@ public class NameActivity extends AppCompatActivity {
         String name = intent.getStringExtra("name");
 
         TextView textViewWelcome = findViewById(R.id.textViewWelcome);
-        textViewWelcome.setText("Welcome " + name + "!");
+        String welcome = getResources().getString(R.string.welcome);
+        textViewWelcome.setText(welcome + " " + name + "!");
 
         Button buttonDoNotCall = findViewById(R.id.buttonDoNotCall);
         buttonDoNotCall.setOnClickListener((click) -> {

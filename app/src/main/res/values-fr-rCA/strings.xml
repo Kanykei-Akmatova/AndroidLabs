@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AndroidLabs</string>
-    <string name="enter_your_name">Enter your name</string>
-    <string name="next">Next</string>
-    <string name="welcome">Welcome</string>
-    <string name="don_call_me_that">Don\'t call me that</string>
-    <string name="thank_you">Thank you</string>
+    <string name="enter_your_name">Entrez votre nom</string>
+    <string name="next">Prochaine</string>
+    <string name="welcome">Bienvenue</string>
+    <string name="don_call_me_that">Ne mon appelle pas comme ça</string>
+    <string name="thank_you">Merci</string>
 </resources>
