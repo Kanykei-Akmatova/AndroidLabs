@@ -28,7 +28,7 @@ public class NameActivity extends AppCompatActivity {
 
         Button buttonThankYou = findViewById(R.id.buttonThankYou);
         buttonThankYou.setOnClickListener((click) -> {
-            setResult(0);
+            setResult(1);
             finish();
         });
     }
