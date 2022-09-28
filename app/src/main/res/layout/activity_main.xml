@@ -16,7 +16,7 @@
             android:id="@+id/textViewName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enter your name" />
+            android:text="@string/enter_your_name" />
 
         <EditText
             android:id="@+id/editTextName"
@@ -29,7 +29,7 @@
             android:id="@+id/buttonNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Next" />
+            android:text="@string/next" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
