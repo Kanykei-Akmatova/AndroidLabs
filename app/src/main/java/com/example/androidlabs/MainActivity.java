@@ -1,5 +1,6 @@
 package com.example.androidlabs;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -17,7 +18,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final String MY_PREF = "MyPref";
+    private static final String MY_PREF = "MyPref";
+    private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,31 +28,21 @@ public class MainActivity extends AppCompatActivity {
 
         Context context = getApplicationContext();
 
-        // Comment the code below if you do not use activity_main_grid
-        Button button = (Button) findViewById(R.id.buttonNext);
         EditText editText = (EditText) findViewById(R.id.editTextName);
-
         SharedPreferences sharedPref = getApplicationContext()
                 .getSharedPreferences(MY_PREF, MODE_PRIVATE);
         String name = sharedPref.getString("Email", "");
         editText.setText(name);
 
+        Button button = (Button) findViewById(R.id.buttonNext);
         button.setOnClickListener((click) -> {
             int LAUNCH_NAME_ACTIVITY = 1;
-            Intent nextPage  = new Intent(this, NameActivity.class);
-            startActivityForResult(nextPage , LAUNCH_NAME_ACTIVITY);
-//            Toast.makeText(context, getResources().getString(R.string.toast_message), Toast.LENGTH_LONG)
-//                    .show();
-        });
 
-//        checkBox.setOnCheckedChangeListener((CompoundButton cb, boolean isChecked) -> {
-//            String checkbox_status = isChecked ? checkbox_on : checkbox_off;
-//            String toast_message = the_checkbox_is_now + " " + checkbox_status;
-//
-//            Snackbar.make(cb, toast_message, Snackbar.LENGTH_LONG)
-//                    .setAction( toast_undo, click -> cb.setChecked(!isChecked))
-//                    .show();
-//        });
+            Intent nextPage  = new Intent(this, NameActivity.class);
+            nextPage.putExtra("name",editText.getText().toString());
+
+            startActivityForResult(nextPage , LAUNCH_NAME_ACTIVITY);
+        });
     }
 
     @Override
@@ -64,5 +56,16 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("name", editText.getText().toString());
         editor.commit();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == SECOND_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+
+            }
+        }
     }
 }
