@@ -5,4 +5,7 @@
     <string name="welcome">Welcome</string>
     <string name="don_call_me_that">Don\'t call me that</string>
     <string name="thank_you">Thank you</string>
+    <string name="urgent">Urgent</string>
+    <string name="add">Add</string>
+    <string name="type_here">Type Here</string>
 </resources>
