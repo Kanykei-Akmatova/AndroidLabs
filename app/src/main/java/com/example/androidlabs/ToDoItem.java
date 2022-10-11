@@ -4,6 +4,14 @@ public class ToDoItem {
     private String toDo = "";
     private Boolean isUrgent = false;
 
+    public ToDoItem(){
+    }
+
+    public ToDoItem(String toDo, Boolean isUrgent){
+        this.toDo = toDo;
+        this.isUrgent = isUrgent;
+    }
+
     public String getToDo() {
         return toDo;
     }
