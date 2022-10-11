@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AndroidLabs</string>
-    <string name="enter_your_name">Entrez votre nom</string>
-    <string name="next">Prochaine</string>
-    <string name="welcome">Bienvenue</string>
-    <string name="don_call_me_that">Ne mon appelle pas comme ça</string>
-    <string name="thank_you">Merci</string>
+    <string name="urgent">Urgent</string>
+    <string name="add">Add</string>
+    <string name="type_here">Type Here</string>
+    <string name="alert_title">Do you want to delete this?</string>
+    <string name="alert_message">\"The selected row is: \"</string>
+    <string name="alert_yes">Yes</string>
+    <string name="alert_no">No</string>
 </resources>
