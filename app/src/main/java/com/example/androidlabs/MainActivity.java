@@ -1,99 +1,132 @@
 package com.example.androidlabs;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.database.Cursor;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Switch;
+import android.widget.ImageView;
 
-import java.util.ArrayList;
+import android.widget.ProgressBar;
+
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import java.net.HttpURLConnection;
+
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "ToDoActivity";
+    private static final String TAG = "MyMainActivity";
+    private static final String BASE_CAT_URL = "https://cataas.com";
 
-    private final ArrayList<ToDoItem> toDoItemList = new ArrayList<>();
-    private ToDoItemListAdapter adapter;
-    SQLHelper sqlHelper;
+    class CatImages extends AsyncTask<String, Integer, String> {
+        private Bitmap currentImage;
+
+        @Override
+        protected String doInBackground(String... strings) {
+            while (true) {
+                HttpURLConnection urlConnection = null;
+                String catBaseURL = strings[0];
+                try {
+                    URL url = new URL(catBaseURL + "/cat?json=true");
+                    urlConnection = (HttpURLConnection) url.openConnection();
+
+                    InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,
+                            StandardCharsets.UTF_8), 8);
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line).append("\n");
+                    }
+
+                    String json = sb.toString();
+                    JSONObject jsonObject = new JSONObject(json);
+                    String catImageURL = (String) jsonObject.get("url");
+                    String catImageId = (String) jsonObject.get("_id");
+                    String catImageFileName = catImageId + ".png";
+                    String catImageFolder = getApplicationContext().getFilesDir() + "/";
+
+                    Log.i(TAG, "Cat image Id:" + catImageId);
+
+                    File file = new File(catImageFolder, catImageFileName);
+
+                    if(!file.exists()){
+                        Log.i(TAG, "Loading cat image from Internet.");
+                        URL catURL = new URL(catBaseURL + catImageURL);
+
+                        urlConnection = (HttpURLConnection) catURL.openConnection();
+                        urlConnection.setDoInput(true);
+                        urlConnection.connect();
+
+                        int responseCode = urlConnection.getResponseCode();
+
+                        if (responseCode == HttpURLConnection.HTTP_OK) {
+                            inputStream = urlConnection.getInputStream();
+                            FileOutputStream outputStream = openFileOutput(
+                                    catImageFileName,
+                                    Context.MODE_PRIVATE);
+
+                            currentImage = BitmapFactory.decodeStream(inputStream);
+                            currentImage.compress(Bitmap.CompressFormat.PNG, 80, outputStream);
+
+                            outputStream.flush();
+                            outputStream.close();
+                            inputStream.close();
+                        }
+                    } else {
+                        Log.i(TAG, "Loading cat image from the local file.");
+                        BitmapFactory.decodeFile(catImageFolder + catImageFileName);
+                    }
+
+                    for (int i = 0; i < 25; i++) {
+                        try {
+                            publishProgress(i);
+                            Thread.sleep(20);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if(urlConnection != null){
+                        urlConnection.disconnect();
+                    }
+                }
+            }
+        }
+
+        public void onProgressUpdate(Integer ... args) {
+            ProgressBar progressBar = findViewById(R.id.progressBar);
+            progressBar.setProgress(args[0]);
+
+            ImageView imageView = findViewById(R.id.imageView);
+            imageView.setImageBitmap( currentImage);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //initializing the sql helper
-        sqlHelper = new SQLHelper(this);
-        sqlHelper.getWritableDatabase();
-
-        EditText editText = findViewById(R.id.editText);
-        Button button = findViewById(R.id.buttonAdd);
-        Switch switchUrgent = findViewById(R.id.switchUrgent);
-
-        button.setOnClickListener((click) -> {
-            int urgent = switchUrgent.isChecked() ? 1 : 0;
-            int id = sqlHelper.add(editText.getText().toString(), urgent);
-            ToDoItem toDoItem = new ToDoItem(id, editText.getText().toString(), switchUrgent.isChecked());
-            toDoItemList.add(toDoItem);
-            editText.setText("");
-            adapter.notifyDataSetChanged();
-        });
-
-        ListView listView = findViewById(R.id.myListView);
-        listView.setAdapter(adapter = new ToDoItemListAdapter(this, toDoItemList));
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            AlertDialog.Builder alertDiBuilder = new AlertDialog.Builder(this);
-            alertDiBuilder.setTitle(R.string.alert_title)
-                    .setMessage(getString(R.string.alert_message) + (position + 1))
-                    .setPositiveButton(R.string.alert_yes, (dialog, arg) -> {
-                        sqlHelper.delete(toDoItemList.get(position).getId());
-                        toDoItemList.remove(position);
-                        adapter.notifyDataSetChanged();
-                        dialog.dismiss();
-                    })
-                    .setNegativeButton(R.string.alert_no, (dialog, arg) -> {
-                    });
-            alertDiBuilder.create().show();
-        });
-
-        loadToDoItems();
-    }
-
-    private void loadToDoItems() {
-        Cursor cursor = sqlHelper.getAll();
-        printCursor(cursor);
-
-        if (cursor.moveToFirst()) {
-            do {
-                toDoItemList.add(
-                        new ToDoItem(
-                                cursor.getInt(0), cursor.getString(1), cursor.getInt(2))
-                );
-            } while (cursor.moveToNext());
-
-            adapter.notifyDataSetChanged();
-        }
-    }
-
-    private void printCursor(Cursor c) {
-        Log.d(TAG, "The database version number: " + sqlHelper.getVersion());
-        Log.d(TAG, "The number of columns in the cursor: " + c.getColumnCount());
-        Log.d(TAG, "The names of the columns in the cursor: ");
-        for (String columnName : c.getColumnNames()) {
-            Log.d(TAG, "    column name: " + columnName);
-        }
-        Log.d(TAG, "The number of results in the cursor: " + c.getCount());
-        Log.d(TAG, "Each row of results in the cursor: ");
-        if (c.moveToFirst()) {
-            do {
-                Log.d(TAG, "    result: "
-                        + c.getInt(0) + ", "
-                        + c.getString(1) + ", "
-                        + c.getInt(2));
-            } while (c.moveToNext());
-        }
+        CatImages catImages = new CatImages();
+        catImages.execute(BASE_CAT_URL);
     }
 }
