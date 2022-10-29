@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ListView;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -24,8 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private ItemListAdapter adapter;
     private static final String SW_BASE_URL = "https://swapi.dev";
 
-    class CatImages extends AsyncTask<String, Integer, String> {
-        private Bitmap currentImage;
+    class StarWarsTask extends AsyncTask<String, Integer, String> {
 
         @Override
         protected String doInBackground(String... strings) {
@@ -48,10 +48,16 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     String json = sb.toString();
-                    JSONObject jsonObject = new JSONObject(json);
-                    String swName = (String) jsonObject.get("name");
-                    String swHeight = (String) jsonObject.get("height");
-                    String swMass = (String) jsonObject.get("mass");
+                    //JSONObject jsonObject = new JSONObject(json);
+                    JSONArray characters = new JSONObject(json).getJSONArray("results");
+                    for (int index = 0; index < characters.length(); index++) {
+                        JSONObject jsonObject = characters.getJSONObject(index);
+                        String swName = (String) jsonObject.get("name");
+                        int swHeight = Integer.parseInt(jsonObject.get("height").toString());
+                        int swMass = Integer.parseInt(jsonObject.get("mass").toString());
+
+                        starWarItems.add(new StarWarItem(swName, swHeight, swMass));
+                    }
 
                     publishProgress();
                 } catch (Exception e) {
@@ -69,20 +75,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//
-//        CatImages catImages = new CatImages();
-//        catImages.execute(BASE_CAT_URL);
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
+        StarWarsTask swData = new StarWarsTask();
+        swData.execute(SW_BASE_URL);
 
 //        button.setOnClickListener((click) -> {
 //            int urgent = switchUrgent.isChecked() ? 1 : 0;
