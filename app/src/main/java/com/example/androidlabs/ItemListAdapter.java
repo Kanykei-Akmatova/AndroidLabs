@@ -10,16 +10,16 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class ToDoItemListAdapter extends BaseAdapter {
+public class ItemListAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<ToDoItem> toDoItemList;
 
-    public ToDoItemListAdapter(Context context, ArrayList<ToDoItem> items) {
+    public ItemListAdapter(Context context, ArrayList<ToDoItem> items) {
         this.context = context;
         this.toDoItemList = items;
     }
 
-    public ToDoItemListAdapter() {
+    public ItemListAdapter() {
     }
 
     @Override
