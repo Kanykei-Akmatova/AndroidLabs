@@ -12,9 +12,9 @@ import java.util.ArrayList;
 
 public class ItemListAdapter extends BaseAdapter {
     private Context context;
-    private ArrayList<StarWarItem> starWarItems;
+    private ArrayList<StarWarObject> starWarItems;
 
-    public ItemListAdapter(Context context, ArrayList<StarWarItem> items) {
+    public ItemListAdapter(Context context, ArrayList<StarWarObject> items) {
         this.context = context;
         this.starWarItems = items;
     }
@@ -46,7 +46,7 @@ public class ItemListAdapter extends BaseAdapter {
             newView = inflater.inflate(R.layout.row, parent, false);
         }
 
-        StarWarItem toDoItem = (StarWarItem) getItem(index);
+        StarWarObject toDoItem = (StarWarObject) getItem(index);
 
         TextView textView = newView.findViewById(R.id.testViewRow);
         textView.setText(toDoItem.getName());

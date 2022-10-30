@@ -1,6 +1,6 @@
 package com.example.androidlabs;
 
-public class StarWarItem {
+public class StarWarObject {
     public String getName() {
         return name;
     }
@@ -9,31 +9,30 @@ public class StarWarItem {
         this.name = name;
     }
 
-    private String name = "";
-    private int height = 0;
-
-    public int getHeight() {
+    public String getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(String height) {
         this.height = height;
     }
 
-    public int getMass() {
+    public String getMass() {
         return mass;
     }
 
-    public void setMass(int mass) {
+    public void setMass(String mass) {
         this.mass = mass;
     }
 
-    private int mass = 0;
+    private String name = "";
+    private String height = "0";
+    private String mass = "0";
 
-    public StarWarItem(){
+    public StarWarObject(){
     }
 
-    public StarWarItem(String name, int height, int mass){
+    public StarWarObject(String name, String height, String mass){
         this.name = name;
         this.height = height;
         this.mass = mass;

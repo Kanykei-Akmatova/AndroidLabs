@@ -2,7 +2,7 @@ package com.example.androidlabs;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Bitmap;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -20,15 +20,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "ToDoActivity";
-    private final ArrayList<StarWarItem> starWarItems = new ArrayList<>();
-    private ItemListAdapter adapter;
     private static final String SW_BASE_URL = "https://swapi.dev";
+    private ListView listView;
 
-    class StarWarsTask extends AsyncTask<String, Integer, String> {
+    class StarWarsTask extends AsyncTask<String,String, ArrayList<StarWarObject>> {
 
         @Override
-        protected String doInBackground(String... strings) {
+        protected ArrayList<StarWarObject> doInBackground(String... strings) {
             while (true) {
                 HttpURLConnection urlConnection = null;
                 String swURL = strings[0];
@@ -48,18 +46,21 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     String json = sb.toString();
-                    //JSONObject jsonObject = new JSONObject(json);
+                    ArrayList<StarWarObject> starWarItems = new ArrayList<>();
+
                     JSONArray characters = new JSONObject(json).getJSONArray("results");
                     for (int index = 0; index < characters.length(); index++) {
                         JSONObject jsonObject = characters.getJSONObject(index);
-                        String swName = (String) jsonObject.get("name");
-                        int swHeight = Integer.parseInt(jsonObject.get("height").toString());
-                        int swMass = Integer.parseInt(jsonObject.get("mass").toString());
 
-                        starWarItems.add(new StarWarItem(swName, swHeight, swMass));
+                        String swName = (String) jsonObject.get(StarWarsConstant.NAME);
+                        String swHeight = (String) jsonObject.get(StarWarsConstant.HEIGHT);
+                        String swMass = (String) jsonObject.get(StarWarsConstant.MASS);
+
+                        starWarItems.add(new StarWarObject(swName, swHeight, swMass));
                     }
 
-                    publishProgress();
+                   // publishProgress();
+                    return starWarItems;
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -70,8 +71,34 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        public void onProgressUpdate(Integer ... args) {
+        @Override
+        protected void onPostExecute(ArrayList<StarWarObject> starWarObjects) {
+            super.onPostExecute(starWarObjects);
+            ItemListAdapter adapter = new ItemListAdapter(getApplicationContext(), starWarObjects);
+            listView.setAdapter(adapter);
+            boolean isTablet = findViewById(R.id.frameLayout) != null;
+            listView.setOnItemClickListener((list, item, position, id) -> {
+                Bundle dataToPass = new Bundle();
+                dataToPass.putString(StarWarsConstant.NAME, starWarObjects.get(position).getName());
+                dataToPass.putString(StarWarsConstant.HEIGHT, starWarObjects.get(position).getHeight());
+                dataToPass.putString(StarWarsConstant.MASS, starWarObjects.get(position).getMass());
 
+                if(isTablet)
+                {
+                    DetailsFragment dFragment = new DetailsFragment(); //add a DetailFragment
+                    dFragment.setArguments(dataToPass); //pass it a bundle for information
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.frameLayout, dFragment) //Add the fragment in FrameLayout
+                            .commit(); //actually load the fragment.
+                }
+                else //isPhone
+                {
+                    Intent nextActivity = new Intent(MainActivity.this, EmptyActivity.class);
+                    nextActivity.putExtras(dataToPass); //send data to next activity
+                    startActivity(nextActivity); //make the transition
+                }
+            });
         }
     }
 
@@ -83,30 +110,6 @@ public class MainActivity extends AppCompatActivity {
         StarWarsTask swData = new StarWarsTask();
         swData.execute(SW_BASE_URL);
 
-//        button.setOnClickListener((click) -> {
-//            int urgent = switchUrgent.isChecked() ? 1 : 0;
-//            int id = sqlHelper.add(editText.getText().toString(), urgent);
-//            ToDoItem toDoItem = new ToDoItem(id, editText.getText().toString(), switchUrgent.isChecked());
-//            toDoItemList.add(toDoItem);
-//            editText.setText("");
-//            adapter.notifyDataSetChanged();
-//        });
-
-        ListView listView = findViewById(R.id.listView);
-        listView.setAdapter(adapter = new ItemListAdapter(this, starWarItems));
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-//            AlertDialog.Builder alertDiBuilder = new AlertDialog.Builder(this);
-//            alertDiBuilder.setTitle(R.string.alert_title)
-//                    .setMessage(getString(R.string.alert_message) + (position + 1))
-//                    .setPositiveButton(R.string.alert_yes, (dialog, arg) -> {
-//                        sqlHelper.delete(toDoItemList.get(position).getId());
-//                        toDoItemList.remove(position);
-//                        adapter.notifyDataSetChanged();
-//                        dialog.dismiss();
-//                    })
-//                    .setNegativeButton(R.string.alert_no, (dialog, arg) -> {
-//                    });
-//            alertDiBuilder.create().show();
-        });
+        listView = findViewById(R.id.listView);
     }
 }

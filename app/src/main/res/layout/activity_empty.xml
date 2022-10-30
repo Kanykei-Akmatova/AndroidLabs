@@ -12,13 +12,6 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="300dp"
-            android:layout_height="match_parent">
-
-        </ListView>
-
         <FrameLayout
             android:id="@+id/frameLayout"
             android:layout_width="match_parent"
