@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AndroidLabs</string>
-    <string name="urgent">Urgent</string>
-    <string name="add">Ajouter</string>
-    <string name="type_here">Ecrivez ici</string>
-    <string name="alert_title">Voulez-vous supprimer ceci?</string>
-    <string name="alert_message">\"La ligne sélectionnée est: \"</string>
-    <string name="alert_yes">Oui</string>
-    <string name="alert_no">Non</string>
+    <string name="mass">Mass:</string>
+    <string name="fill_me">fill_me</string>
+    <string name="height">Height:</string>
+    <string name="name">Name:</string>
 </resources>

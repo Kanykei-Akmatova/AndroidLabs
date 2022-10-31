@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
                         starWarItems.add(new StarWarObject(swName, swHeight, swMass));
                     }
 
-                   // publishProgress();
                     return starWarItems;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -85,18 +84,18 @@ public class MainActivity extends AppCompatActivity {
 
                 if(isTablet)
                 {
-                    DetailsFragment dFragment = new DetailsFragment(); //add a DetailFragment
-                    dFragment.setArguments(dataToPass); //pass it a bundle for information
+                    DetailsFragment dFragment = new DetailsFragment();
+                    dFragment.setArguments(dataToPass);
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.frameLayout, dFragment) //Add the fragment in FrameLayout
-                            .commit(); //actually load the fragment.
+                            .replace(R.id.frameLayout, dFragment)
+                            .commit();
                 }
                 else //isPhone
                 {
                     Intent nextActivity = new Intent(MainActivity.this, EmptyActivity.class);
-                    nextActivity.putExtras(dataToPass); //send data to next activity
-                    startActivity(nextActivity); //make the transition
+                    nextActivity.putExtras(dataToPass);
+                    startActivity(nextActivity);
                 }
             });
         }
