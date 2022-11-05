@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AndroidLabs</string>
+    <string name="app_name">CST2335 Lab 7</string>
     <string name="urgent">Urgent</string>
     <string name="add">Add</string>
     <string name="type_here">Type Here</string>
@@ -7,4 +7,8 @@
     <string name="alert_message">The selected row is: </string>
     <string name="alert_yes">Yes</string>
     <string name="alert_no">No</string>
+    <string name="item">Item</string>
+    <string name="string_open">open</string>
+    <string name="string_close">close</string>
+    <string name="dadJoke">What do sprinters eat before a race? Nothing, they fast!</string>
 </resources>

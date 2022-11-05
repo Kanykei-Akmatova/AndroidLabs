@@ -1,99 +1,88 @@
 package com.example.androidlabs;
 
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.database.Cursor;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Switch;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "ToDoActivity";
 
-    private final ArrayList<ToDoItem> toDoItemList = new ArrayList<>();
-    private ToDoItemListAdapter adapter;
-    SQLHelper sqlHelper;
+    private DrawerLayout drawerLayout;
+    private Toolbar toolbar;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //initializing the sql helper
-        sqlHelper = new SQLHelper(this);
-        sqlHelper.getWritableDatabase();
+        drawerLayout = findViewById(R.id.drawerLayout);
+        navigationView  = findViewById(R.id.navigationMenu);
+        toolbar = findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
 
-        EditText editText = findViewById(R.id.editText);
-        Button button = findViewById(R.id.buttonAdd);
-        Switch switchUrgent = findViewById(R.id.switchUrgent);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout,
+                toolbar, R.string.string_open, R.string.string_close);
 
-        button.setOnClickListener((click) -> {
-            int urgent = switchUrgent.isChecked() ? 1 : 0;
-            int id = sqlHelper.add(editText.getText().toString(), urgent);
-            ToDoItem toDoItem = new ToDoItem(id, editText.getText().toString(), switchUrgent.isChecked());
-            toDoItemList.add(toDoItem);
-            editText.setText("");
-            adapter.notifyDataSetChanged();
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+                switch (item.getItemId()){
+                    case R.id.nav_first:
+                        // Toast.makeText(MainActivity.this, "Home Clicked", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.nav_second:
+                        Intent i = new Intent(MainActivity.this, DadJoke.class);
+                        startActivity(i);
+                        break;
+                    case R.id.nav_third:
+                        finishAffinity();
+                        break;
+
+                }
+                return true;
+            }
         });
-
-        ListView listView = findViewById(R.id.myListView);
-        listView.setAdapter(adapter = new ToDoItemListAdapter(this, toDoItemList));
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            AlertDialog.Builder alertDiBuilder = new AlertDialog.Builder(this);
-            alertDiBuilder.setTitle(R.string.alert_title)
-                    .setMessage(getString(R.string.alert_message) + (position + 1))
-                    .setPositiveButton(R.string.alert_yes, (dialog, arg) -> {
-                        sqlHelper.delete(toDoItemList.get(position).getId());
-                        toDoItemList.remove(position);
-                        adapter.notifyDataSetChanged();
-                        dialog.dismiss();
-                    })
-                    .setNegativeButton(R.string.alert_no, (dialog, arg) -> {
-                    });
-            alertDiBuilder.create().show();
-        });
-
-        loadToDoItems();
     }
 
-    private void loadToDoItems() {
-        Cursor cursor = sqlHelper.getAll();
-        printCursor(cursor);
-
-        if (cursor.moveToFirst()) {
-            do {
-                toDoItemList.add(
-                        new ToDoItem(
-                                cursor.getInt(0), cursor.getString(1), cursor.getInt(2))
-                );
-            } while (cursor.moveToNext());
-
-            adapter.notifyDataSetChanged();
-        }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
     }
 
-    private void printCursor(Cursor c) {
-        Log.d(TAG, "The database version number: " + sqlHelper.getVersion());
-        Log.d(TAG, "The number of columns in the cursor: " + c.getColumnCount());
-        Log.d(TAG, "The names of the columns in the cursor: ");
-        for (String columnName : c.getColumnNames()) {
-            Log.d(TAG, "    column name: " + columnName);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.item1:
+                Toast.makeText(getApplicationContext(),
+                        "You clicked on item 1",
+                        Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.item2:
+                Toast.makeText(getApplicationContext(),
+                        "You clicked on item 2",
+                        Toast.LENGTH_SHORT).show();
+                break;
         }
-        Log.d(TAG, "The number of results in the cursor: " + c.getCount());
-        Log.d(TAG, "Each row of results in the cursor: ");
-        if (c.moveToFirst()) {
-            do {
-                Log.d(TAG, "    result: "
-                        + c.getInt(0) + ", "
-                        + c.getString(1) + ", "
-                        + c.getInt(2));
-            } while (c.moveToNext());
-        }
+        return super.onOptionsItemSelected(item);
     }
 }

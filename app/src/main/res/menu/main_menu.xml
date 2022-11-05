@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/item1"
+        android:icon="@drawable/icon_warranty"
+        android:title="warranty"
+        app:showAsAction="ifRoom">
+    </item>
+
+    <item
+        android:id="@+id/item2"
+        android:icon="@drawable/icon_bitcoin"
+        android:title="bitcoin!"
+        app:showAsAction="ifRoom">
+    </item>
+
+</menu>
