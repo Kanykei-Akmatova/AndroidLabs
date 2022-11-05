@@ -71,18 +71,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
+        String toastMessage = "";
         switch (item.getItemId()) {
             case R.id.item1:
-                Toast.makeText(getApplicationContext(),
-                        "You clicked on item 1",
-                        Toast.LENGTH_SHORT).show();
+                toastMessage = getString(R.string.item1_message);
                 break;
             case R.id.item2:
-                Toast.makeText(getApplicationContext(),
-                        "You clicked on item 2",
-                        Toast.LENGTH_SHORT).show();
+                toastMessage = getString(R.string.item2_message);
                 break;
         }
+
+        Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_SHORT).show();
         return super.onOptionsItemSelected(item);
     }
 }
