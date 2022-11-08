@@ -4,14 +4,14 @@
     <string name="urgent">Urgent</string>
     <string name="add">Ajouter</string>
     <string name="type_here">Ecrivez ici</string>
-    <string name="alert_title">Voulez-vous supprimer ceci?</string>
-    <string name="alert_message">\"La ligne sélectionnée est: \"</string>
-    <string name="alert_yes">Oui</string>
-    <string name="alert_no">Non</string>
-    <string name="item">Item</string>
-    <string name="string_open">open</string>
-    <string name="string_close">close</string>
-    <string name="dadJoke">What do sprinters eat before a race? Nothing, they fast!</string>
-    <string name="item1_message">You clicked on item 1</string>
-    <string name="item2_message">You clicked on item 2</string>
+    <string name="alert_title">titre de la alerte</string>
+    <string name="alert_message">message du alerte</string>
+    <string name="alert_yes">alerte Oui</string>
+    <string name="alert_no">alerte Non</string>
+    <string name="item">Article</string>
+    <string name="string_open">chaîne ouverte</string>
+    <string name="string_close">fermer la chaîne</string>
+    <string name="dadJoke">papa blague</string>
+    <string name="item1_message">Message de la article 1</string>
+    <string name="item2_message">Message de la article 2</string>
 </resources>
