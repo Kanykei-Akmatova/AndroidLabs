@@ -8,4 +8,10 @@
     <string name="alert_message">\"La ligne sélectionnée est: \"</string>
     <string name="alert_yes">Oui</string>
     <string name="alert_no">Non</string>
+    <string name="item">Item</string>
+    <string name="string_open">open</string>
+    <string name="string_close">close</string>
+    <string name="dadJoke">What do sprinters eat before a race? Nothing, they fast!</string>
+    <string name="item1_message">You clicked on item 1</string>
+    <string name="item2_message">You clicked on item 2</string>
 </resources>

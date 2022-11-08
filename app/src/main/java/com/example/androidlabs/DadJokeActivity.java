@@ -1,15 +1,12 @@
 package com.example.androidlabs;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
-public class DadJoke extends BaseActivity {
+public class DadJokeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_dad_joke);
 
         Bundle dataToPass = getIntent().getExtras();
 

@@ -8,6 +8,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,13 +30,15 @@ public class BaseActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView  = findViewById(R.id.navigationMenu);
         toolbar = findViewById(R.id.toolBar);
-        setSupportActionBar(toolbar);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout,
                 toolbar, R.string.string_open, R.string.string_close);
 
         drawerLayout.addDrawerListener(toggle);
+
         toggle.syncState();
+
+        //navigationView.setBackgroundColor(Color.WHITE);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -43,10 +46,10 @@ public class BaseActivity extends AppCompatActivity {
                 drawerLayout.closeDrawer(GravityCompat.START);
                 switch (item.getItemId()){
                     case R.id.nav_first:
-                        // Toast.makeText(MainActivity.this, "Home Clicked", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(BaseActivity.this, MainActivity.class));
                         break;
                     case R.id.nav_second:
-                        Intent i = new Intent(BaseActivity.this, DadJoke.class);
+                        Intent i = new Intent(BaseActivity.this, DadJokeActivity.class);
                         startActivity(i);
                         break;
                     case R.id.nav_third:
